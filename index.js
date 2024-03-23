@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+const bodyParser = require('body-parser');
+app.set('views' , path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.set(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -14,7 +20,7 @@ app.get('/SignUp', (req, res) => {
 });
 
 app.get('/ForgetPassword', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'forgetPassword.html'));
+  res.render('forgetPassword', {email: '', user_exist: '', status: ''});
 });
 
 app.get('/', (req, res) => {
