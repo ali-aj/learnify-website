@@ -13,7 +13,8 @@ const signUpController = require('./controllers/signUpController');
 const forgetPasswordController = require('./controllers/forgetPasswordController');
 
 // Use body parser for form data
-app.set(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -26,7 +27,7 @@ app.get('/SignUp', signUpController.signUpPage);
 app.post('/SignUp', signUpController.signUp);
 
 app.get('/ForgetPassword', forgetPasswordController.forgetPasswordPage);
-app.post('/ForgetPassword', forgetPasswordController.sendPasswordResetEmail);
+app.post('/ForgetPassword/ChangePassword', forgetPasswordController.changePassword);
 
 app.get('/', (req, res) => {
   res.redirect('/SignIn');

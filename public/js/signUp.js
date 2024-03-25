@@ -10,17 +10,12 @@ function validatePassword() {
 
     var alertDiv = document.createElement("div");
     if (!re.test(password)) {
-        alertDiv.className = "alert alert-danger";
-        alertDiv.role = "alert";
-        alertDiv.textContent = "Please choose a strong password!";
-        document.body.insertBefore(alertDiv, document.body.firstChild);
+        // alertDiv.className = "alert alert-danger";
+        // alertDiv.role = "alert";
+        // alertDiv.textContent = "Please choose a strong password!";
+        // document.body.insertBefore(alertDiv, document.body.firstChild);
         return false;
     }
-    document.getElementById("signupform").reset();
-    alertDiv.className = "alert alert-success";
-    alertDiv.role = "alert";
-    alertDiv.textContent = "You have successfully Registered!";
-    document.body.insertBefore(alertDiv, document.body.firstChild);
     return true;
 }
 
@@ -33,4 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
             passwordInput.type = "password";
         }
     });
+
+    document.getElementById("passwordField").addEventListener("input", function() {
+        if (validatePassword()) {
+            document.getElementById("submitBtn").disabled = false;
+        } else {
+            document.getElementById("submitBtn").disabled = true;
+        }
+    });
+    
 });

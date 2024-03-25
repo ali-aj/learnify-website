@@ -10,20 +10,34 @@
             integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
             crossorigin="anonymous"
         />
-        <link rel="stylesheet" href="css/styles.css">
-        <script src="js/signUp.js"></script>
+        <link rel="stylesheet" href="/css/styles.css">
+        <script src="/js/signUp.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </head>
     <body>
 
-        <form class="my-form" id="signupform" onsubmit="event.preventDefault(); validatePassword()">
+        <form method="POST" action="/SignUp" class="my-form" id="signupform">
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center vh-100">
                     <div class="col-md-8">
+                        <% if (error && error !== '') { %>
+                            <div class="alert alert-danger alert-dismissible fade show mb-1" role="alert">
+                                <%= error %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% } %>                        
                         <div class="card login-container m-0">
                             <div class="card-header">
-                                <h3 class="text-center">Sign Up Here</h3>
+                                <h3 class="text-center">Register Here</h3>
                             </div>
                             <div class="card-body row g-3">
+                                <div class="col-md-12">
+                                    <select class="form-select" id="role" name="role" required>
+                                        <option value="">Select Role</option>
+                                        <option value="student">Student</option>
+                                        <option value="teacher">Teacher</option>
+                                    </select>
+                                </div>
                                 <div class="col-md-6">
                                     <label for="firstName" class="form-label"> <b>First Name</b> </label>
                                     <input type="text" class="form-control" id="firstName" name="firstName" required />
@@ -78,7 +92,7 @@
                                     </p>
                                 </div>
                                 <div class="d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-dark" type="submit">Sign Up</button>
+                                    <button class="btn btn-dark flex-fill" type="submit" id="submitBtn" disabled>Register</button>
                                 </div>
                             </div>
                         </div>
