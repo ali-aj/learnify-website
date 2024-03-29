@@ -3,6 +3,26 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
+var session = require('express-session')
+
+app.use(
+  session({
+    secret: 'SomeSuperLongHardToGuessSecretString',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect('/SignIn');
+    }
+  });
+});
+
 // Set views directory and template engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -11,6 +31,7 @@ app.set('view engine', 'ejs');
 const signInController = require('./controllers/signInController');
 const signUpController = require('./controllers/signUpController');
 const forgetPasswordController = require('./controllers/forgetPasswordController');
+const landingPageController = require('./controllers/landingPageController');
 
 // Use body parser for form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,9 +50,7 @@ app.post('/SignUp', signUpController.signUp);
 app.get('/ForgetPassword', forgetPasswordController.forgetPasswordPage);
 app.post('/ForgetPassword/ChangePassword', forgetPasswordController.changePassword);
 
-app.get('/', (req, res) => {
-  res.redirect('/SignIn');
-});
+app.get('/', landingPageController.landingPage);
 
 const PORT = process.env.PORT || 3000;
 

@@ -1,57 +1,49 @@
-
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
-
-const user = new User();
 
 exports.forgetPasswordPage = (req, res) => {
     res.render('forgetPassword', { email: '', user_exist: '', status: '' });
 };
 
-exports.resetPassword = (req, res) => {
-    // Retrieve token and new password from request body
-    const otp = req.body.otp;
-    const password = req.body.password;
-    const email = req.body.email;
+exports.resetPassword = async (req, res) => {
+    try {
+        // Retrieve token and new password from request body
+        const otp = req.body.otp;
+        const password = req.body.password;
+        const email = req.body.email;
 
-    // Check if OTP is correct
-    user.getOTP(email, (err, results) => {
-        if (err) {
-            return res.status(500).send('Internal Server Error');
-        }
+        const user = new User();
 
+        // Check if OTP is correct
+        const results = await user.getOTP(email);
         if (results.length > 0) {
             if (results[0].otp == otp) {
                 // Update the user's password
-                user.updatePassword(email, password, (err, results) => {
-                    if (err) {
-                        return res.status(500).send('Internal Server Error');
-                    }
-                    // Redirect to the sign-in page
-                    res.render('signIn', { error: '' });
-                });
+                await user.updatePassword(email, password);
+                // Redirect to the sign-in page
+                return res.render('signIn', { error: '' });
             } else {
                 // Incorrect OTP, render forget-password page with error message
-                res.render('forgetPassword', { email: email, user_exist: 'True', status: 'Fail' });
+                return res.render('forgetPassword', { email: email, user_exist: 'True', status: 'Fail' });
             }
         } else {
             // No OTP found, render forget-password page with error message
-            res.render('forgetPassword', { email: email, user_exist: 'True', status: '' });
+            return res.render('forgetPassword', { email: email, user_exist: 'True', status: '' });
         }
-    });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        return res.status(500).send('Internal Server Error');
+    }
 };
 
+exports.sendOTP = async (req, res) => {
+    try {
+        // Retrieve email from request body
+        const email = req.body.email;
 
+        const user = new User();
 
-exports.sendOTP = (req, res) => {
-    // Retrieve email from request body
-    const email = req.body.email;
-
-    user.checkEmailDuplicate(email, (err, emailResults) => {
-        if (err) {
-            return res.status(500).send('Internal Server Error');
-        }
-
+        const emailResults = await user.checkEmailDuplicate(email);
         if (emailResults.length > 0) {
             // Generate a random OTP (e.g., 6-digit number)
             const OTP = Math.floor(100000 + Math.random() * 900000);
@@ -60,52 +52,55 @@ exports.sendOTP = (req, res) => {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'example@gmail.com', // Your Gmail email address
+                    user: '', // Your Gmail email address
                     pass: '' // Your Gmail password or App password if you have 2-step verification enabled
                 }
             });
 
             // Email options
             const mailOptions = {
-                from: 'example@gmail.com', // Your Gmail email address
+                from: '', // Your Gmail email address
                 to: email,
                 subject: 'OTP Verification',
                 text: `Your OTP for verification is: ${OTP}`
             };
 
             // Send email with OTP
-            transporter.sendMail(mailOptions, function(error, info){
+            transporter.sendMail(mailOptions, async function(error, info) {
                 if (error) {
-                    console.log(error);
+                    console.error('Error sending OTP email:', error);
                     // Handle error, e.g., render an error page
-                    res.render('error', { message: 'Failed to send OTP. Please try again later.' });
+                    return res.status(500).send('Internal Server Error');
                 } else {
                     // Save the OTP to the database
-                    user.addOTP(email, OTP, (err, results) => {
-                        if (err) {
-                            return res.status(500).send('Internal Server Error');
-                        }
-                    });
-                    // Redirect to a page where the user can enter the OTP for verification
-                    res.render('forgetPassword', { email: email, user_exist: 'True', status: '' });
+                    const results = await user.addOTP(email, OTP);
+                    if (results) {
+                        // Redirect to a page where the user can enter the OTP for verification
+                        return res.render('forgetPassword', { email: email, user_exist: 'True', status: '' });
+                    } else {
+                        // Handle error, e.g., render an error page
+                        return res.status(500).send('Internal Server Error');
+                    }
                 }
             });
         }
         else {
             // User with this email does not exist, render forget-password page with error message
-            res.render('forgetPassword', { email: '', user_exist: 'False', status: '' });
+            return res.render('forgetPassword', { email: '', user_exist: 'False', status: '' });
         }
-    });
-
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+        return res.status(500).send('Internal Server Error');
+    }
 };
 
 exports.changePassword = (req, res) => {
     const OTP = req.body.otp;
 
     if (OTP == '') {
-        this.sendOTP(req, res);
+        return this.sendOTP(req, res);
     }
     else {
-        this.resetPassword(req, res);
+        return this.resetPassword(req, res);
     }
-}
+};

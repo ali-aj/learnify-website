@@ -1,7 +1,6 @@
 
 const User = require('../models/User');
 
-const user = new User();
 
 // Controller method to render the sign-in page
 exports.signInPage = (req, res) => {
@@ -9,24 +8,27 @@ exports.signInPage = (req, res) => {
 };
 
 // Controller method to process sign-in form submission
-exports.signIn = (req, res) => {
+exports.signIn = async (req, res) => {
     // Retrieve username and password from request body
     const username = req.body.username;
     const password = req.body.password;
 
-    user.authenticate(username, password, (err, userResult) => {
-        if (err) {
-            console.error('Error checking user:', err);
-            return res.status(500).send('Internal Server Error');
-        }
+    const user = new User();
 
-        if (userResult.length > 0) {
+    try {
+        const userResult = await user.authenticate(username, password);
+        
+        if (userResult) {
             // Authentication successful, redirect to dashboard or homepage
-            res.redirect('/Home');
-        }
-        else{
+            req.session.isLoggedIn = true;
+            req.session.username = username;
+            res.redirect('/');
+        } else {
             // Authentication failed, render sign-in page with error message
             res.render('signIn', { error: 'Invalid username or password' });
         }
-    });
+    } catch (error) {
+        console.error('Error checking user:', error);
+        res.status(500).send('Internal Server Error');
+    }
 };
