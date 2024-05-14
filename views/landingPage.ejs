@@ -69,14 +69,12 @@
         </button> -->
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <!-- <a href="/" class="nav-item nav-link active">Home</a> -->
-                <!-- <a href="#about1" class="nav-item nav-link">About</a> -->
-                <!-- <a href="#categories" class="nav-item nav-link">Categories</a> -->
                 <% if (isAuthenticated == false) { %>
                     <a href="/SignIn" class="nav-item nav-link">Sign In</a>
+                <% } else { %>
+                    <a href="/courses" class="nav-item nav-link">Browse Courses</a>
+                    <a href="<%= username %>/learning" class="nav-item nav-link">My Learning</a>
                 <% } %>
-                <!-- <a href="#instructors" class="nav-item nav-link">Instructors</a> -->
-                <!-- <a href="" class="nav-item nav-link">Contact</a> -->
             </div>
             <% if (isAuthenticated == false) {%>
                 <a href="/SignUp" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
@@ -428,9 +426,9 @@
                 </div>
                 <div class="col-lg-3 col-md-6" style="justify-self: center; margin-left:11%;">
                     <h4 class="text-white mb-3">Contact</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, Faisalabad, Pakistan</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+91 012 2536148</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>LoonayWala, Faisalabad, Pakistan</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+92 312 073 7997</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>alij7478@gmail.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>

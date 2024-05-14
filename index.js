@@ -32,6 +32,7 @@ const signInController = require('./controllers/signInController');
 const signUpController = require('./controllers/signUpController');
 const forgetPasswordController = require('./controllers/forgetPasswordController');
 const landingPageController = require('./controllers/landingPageController');
+const coursesController = require('./controllers/coursesController');
 
 // Use body parser for form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,6 +52,7 @@ app.get('/ForgetPassword', forgetPasswordController.forgetPasswordPage);
 app.post('/ForgetPassword/ChangePassword', forgetPasswordController.changePassword);
 
 app.get('/', landingPageController.landingPage);
+app.get('/courses', coursesController.coursesPage);
 
 const PORT = process.env.PORT || 3000;
 
