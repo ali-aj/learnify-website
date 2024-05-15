@@ -30,7 +30,11 @@
       </h3>
       <img id="astronaut" src="/img/astronaut.svg" />
       <img id="planet" src="/img/planet.svg" />
-      <a href="/"><button class="denied__link">Go Home</button></a>
+      <% if (isTeacher == true) { %>
+        <a href="/manageCourses"><button class="denied__link">Go Home</button></a>
+      <% } else { %>
+        <a href="/"><button class="denied__link">Go Home</button></a>
+      <% } %>
     </div>
 
     <script
