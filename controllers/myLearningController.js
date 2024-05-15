@@ -1,11 +1,10 @@
 const Courses = require('../models/Courses');
+const User = require('../models/User');
 
-
-// Controller method to render the courses page
-exports.coursesPage = (req, res) => {
+exports.mylearningPage = (req, res) => {
     // Check if the user is authenticated
     if (req.session.isLoggedIn) {
-        res.render('courses', { isAuthenticated: true, username: req.session.username });
+        res.render('myLearnings', { isAuthenticated: true, username: req.session.username });
     }
     else {
         res.render('error', { message: 'you are not authenticated.' });

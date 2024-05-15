@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 exports.forgetPasswordPage = (req, res) => {
     res.render('forgetPassword', { email: '', user_exist: '', status: '' });
@@ -52,14 +53,14 @@ exports.sendOTP = async (req, res) => {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: '', // Your Gmail email address
-                    pass: '' // Your Gmail password or App password if you have 2-step verification enabled
+                    user: process.env.email, 
+                    pass: process.env.emailPassword 
                 }
             });
 
             // Email options
             const mailOptions = {
-                from: '', // Your Gmail email address
+                from: process.env.email, 
                 to: email,
                 subject: 'OTP Verification',
                 text: `Your OTP for verification is: ${OTP}`

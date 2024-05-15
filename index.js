@@ -2,12 +2,13 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 var session = require('express-session')
 
 app.use(
   session({
-    secret: 'SomeSuperLongHardToGuessSecretString',
+    secret: process.env.sessionSecret,
     resave: false,
     saveUninitialized: false,
   })
@@ -33,6 +34,9 @@ const signUpController = require('./controllers/signUpController');
 const forgetPasswordController = require('./controllers/forgetPasswordController');
 const landingPageController = require('./controllers/landingPageController');
 const coursesController = require('./controllers/coursesController');
+const myLearningController = require('./controllers/myLearningController');
+const manageCoursesController = require('./controllers/manageCoursesController');
+const getPaidController = require('./controllers/getPaidController');
 
 // Use body parser for form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,9 +56,17 @@ app.get('/ForgetPassword', forgetPasswordController.forgetPasswordPage);
 app.post('/ForgetPassword/ChangePassword', forgetPasswordController.changePassword);
 
 app.get('/', landingPageController.landingPage);
-app.get('/courses', coursesController.coursesPage);
 
-const PORT = process.env.PORT || 3000;
+// Student Requests
+app.get('/courses', coursesController.coursesPage);
+app.get('/my-learnings', myLearningController.mylearningPage);
+
+
+// Teacher Requests
+app.get('/manageCourses', manageCoursesController.manageCoursesPage);
+app.get('/get-paid', getPaidController.getPaidPage);
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);

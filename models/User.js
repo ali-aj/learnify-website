@@ -66,12 +66,13 @@ class User {
         try {
             const query_str = 'SELECT * FROM users WHERE username = ?';
             const [results, fields] = await this.query(query_str, [username]);
+            // console.log(results);
             if (results.length === 0) {
                 return false; // User not found
             }
             // const hashedPassword = this.hashPassword(password);
             const match = await this.validatePassword(password, results.password);
-            console.log(match);
+            // console.log(match);
             if (match) {
                 return results; // Authentication successful
             } else {

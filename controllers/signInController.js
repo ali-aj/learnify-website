@@ -22,7 +22,14 @@ exports.signIn = async (req, res) => {
             // Authentication successful, redirect to dashboard or homepage
             req.session.isLoggedIn = true;
             req.session.username = username;
-            res.redirect('/');
+            
+            if (userResult.role === 'teacher') {
+                req.session.isTeacher = true;
+                res.redirect('/manageCourses');
+            } else {
+                req.session.isTeacher = false;
+                res.redirect('/');
+            }
         } else {
             // Authentication failed, render sign-in page with error message
             res.render('signIn', { error: 'Invalid username or password' });
