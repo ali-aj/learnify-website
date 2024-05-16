@@ -21,6 +21,18 @@ class User {
         });
     }
 
+    async getUserProfilePic(username) {
+        const query = 'SELECT profile_image FROM users WHERE username = ?';
+        const values = [username];
+        return await this.query(query, values);
+    }
+
+    async updateUserProfile(first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, profile_image, username) {
+        const query = 'UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, email = ?, address = ?, facebook = ?, twitter = ?, linkedin = ?, instagram = ?, dribble = ?, pinterest = ?, profile_image = ? WHERE username = ?';
+        const values = [first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, profile_image, username];
+        await this.query(query, values);
+    }
+
     // Method to hash a password
     async hashPassword(password) {
         try {
@@ -91,12 +103,19 @@ class User {
         await this.query(query, values);
     }
 
+    // Method to get a user by username
+    async getUser(username) {
+        const query = 'SELECT * FROM users WHERE username = ?';
+        const values = [username];
+        return await this.query(query, values);
+    }
+
     // Method to update password for a given email
-    async updatePassword(email, password) {
+    async updatePassword(username, password) {
         try {
             const hashedPassword = await this.hashPassword(password);
-            const query = 'UPDATE users SET password = ? WHERE email = ?';
-            const values = [hashedPassword, email];
+            const query = 'UPDATE users SET password = ? WHERE username = ?';
+            const values = [hashedPassword, username];
             await this.query(query, values);
         } catch (error) {
             throw new Error('Error updating password');

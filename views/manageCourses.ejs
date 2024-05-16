@@ -25,7 +25,7 @@
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="/css/courses.css" rel="stylesheet">
@@ -73,7 +73,19 @@
             <% if (isAuthenticated == false) {%>
                 <a href="/SignUp" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
             <% } else { %>
-                <a href="/logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Log Out<i class="fa fa-arrow-right ms-3"></i></a>
+                <!-- <a href="/logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Log Out<i class="fa fa-arrow-right ms-3"></i></a> -->
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0.5rem 1rem;">
+                        <% if (user.profile_image) { %>
+                            <img src="/profile-image/<%= username %>" alt="<%= username %>" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                        <% } %>
+                        <span><%= username %></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li><a class="dropdown-item" href="/<%= username %>/profile">Profile</a></li>
+                      <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                    </ul>
+                </div>
             <% } %>
         </div>
     </nav>
