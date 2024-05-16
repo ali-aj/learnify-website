@@ -9,7 +9,10 @@ exports.mylearningPage = async (req, res) => {
         const user_result = await user.getUser(req.session.username);
         res.render('myLearnings', { isAuthenticated: true, username: req.session.username, isTeacher: req.session.isTeacher, user: user_result[0]});
     }
+    else if (req.session.isLoggedIn && req.session.isTeacher) {
+        res.render('error', { message: 'page not found.', isTeacher: true });
+    }
     else {
-        res.render('error', { message: 'you are not authenticated.' });
+        res.render('error', { message: 'you are not authenticated.', isTeacher: false });
     }
 };

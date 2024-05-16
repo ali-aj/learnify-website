@@ -16,7 +16,7 @@ exports.userProfilePage = async (req, res) => {
         res.render('userProfile', { isAuthenticated: true, username: req.session.username, isTeacher: req.session.isTeacher, user: user_result[0]});
     }
     else {
-        res.render('error', { message: 'you are not authenticated.' });
+        res.render('error', { message: 'you are not authenticated.', isTeacher: req.session.isTeacher});
     } 
 };
 
