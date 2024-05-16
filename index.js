@@ -37,6 +37,7 @@ const coursesController = require('./controllers/coursesController');
 const myLearningController = require('./controllers/myLearningController');
 const manageCoursesController = require('./controllers/manageCoursesController');
 const getPaidController = require('./controllers/getPaidController');
+const userProfileController = require('./controllers/userProfileController');
 
 // Use body parser for form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,6 +57,10 @@ app.get('/ForgetPassword', forgetPasswordController.forgetPasswordPage);
 app.post('/ForgetPassword/ChangePassword', forgetPasswordController.changePassword);
 
 app.get('/', landingPageController.landingPage);
+
+app.get('/:username/profile', userProfileController.userProfilePage);
+app.post('/:username/profile', userProfileController.updateUserProfile);
+app.get('/profile-image/:username', userProfileController.getProfileImage);
 
 // Student Requests
 app.get('/courses', coursesController.coursesPage);
