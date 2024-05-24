@@ -1,18 +1,33 @@
+const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
+
 class Courses {
     constructor() {
-        this.con = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "57365736",
-            database: "learnify"
-        });
+        // Connection URL
+        const url = process.env.mongoUrl;
 
-        // Connect to the database
-        this.con.connect((err) => {
+        // Create a new MongoClient
+        this.client = new MongoClient(url); 
+    }
+
+    async connect() {
+        try {
+            await this.client.connect();
+            console.log("Connected successfully to MongoDB");
+        } catch (err) {
+            console.error("Failed to connect to MongoDB", err);
+        }
+    }
+
+    async insertCourse(course_details) {
+        await this.connect();
+        const db = this.client.db('Learnify');
+        const collection = db.collection('courses');
+        collection.insertOne(course_details, (err, result) => {
             if (err) {
-                console.error('Error connecting to database:', err);
+                console.error(err);
             } else {
-                console.log('Connected to database');
+                console.log('Course added successfully');
             }
         });
     }

@@ -69,6 +69,8 @@ app.get('/my-learnings', myLearningController.mylearningPage);
 
 // Teacher Requests
 app.get('/manageCourses', manageCoursesController.manageCoursesPage);
+app.get('/manageCourses/createCourse', manageCoursesController.addCoursePage);
+app.post('/manageCourses/createCourse', manageCoursesController.addCourse);
 app.get('/get-paid', getPaidController.getPaidPage);
 
 const PORT = process.env.PORT;

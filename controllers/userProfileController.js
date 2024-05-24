@@ -8,6 +8,7 @@ const user = new User();
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('profile_image');
 
+// Get Request
 exports.userProfilePage = async (req, res) => {
     if (req.session.isLoggedIn) {
         const user_result = await user.getUser(req.session.username);
@@ -20,6 +21,7 @@ exports.userProfilePage = async (req, res) => {
     } 
 };
 
+// Get Request
 exports.getProfileImage = async (req, res) => {
     if (req.session.isLoggedIn && req.params.username === req.session.username) {
         const username = req.session.username;
@@ -34,6 +36,7 @@ exports.getProfileImage = async (req, res) => {
     }
 }
 
+// Post Request
 exports.updateUserProfile = async (req, res) => {
     upload(req, res, async (err) => {
         if (err) {

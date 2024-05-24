@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Learnify | Create Courses</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/addCourse.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="/manageCourses" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Learnify</h2>
+        </a>
+
+        <!-- Add a search form -->
+        <form class="d-flex flex-wrap justify-content-end align-items-center">
+            <div class="input-group">
+                <input class="form-control no-shadow" type="search" placeholder="Search for anything" aria-label="Search" style="width: 300px; border-bottom-left-radius: 30px; border-top-left-radius: 30px; padding: 10px; background-color: rgba(0, 0, 0, 0.034); color: black; border-color: transparent; border: 1px solid black; ">
+                <button class="btn btn-primary" type="submit" style="border-radius: 0 30px 30px 0; border: 1px solid black; color: var(--primary);">
+                    <i class="bi bi-search text-white"></i>
+                </button>
+            </div>
+        </form>
+           
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <% if (isAuthenticated == false) { %>
+                    <a href="/SignIn" class="nav-item nav-link">Sign In</a>
+                <% } else { %>
+                    <a href="/manageCourses" class="nav-item nav-link active">Manage Courses</a>
+                    <a href="/get-paid" class="nav-item nav-link">Get Paid</a>
+                <% } %>
+            </div>
+            <% if (isAuthenticated == false) {%>
+                <a href="/SignUp" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+            <% } else { %>
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0.5rem 1rem;">
+                        <% if (user.profile_image) { %>
+                            <img src="/profile-image/<%= username %>" alt="<%= username %>" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                        <% } %>
+                        <span><%= username %></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li><a class="dropdown-item" href="/<%= username %>/profile">Profile</a></li>
+                      <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                    </ul>
+                </div>
+            <% } %>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <div class="container-fluid bg-primary py-5 mb-5 page-header">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="display-3 text-white animated slideInDown">Create Courses</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a class="text-white" href="/manageCourses">Manage Courses</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Create Course</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Create Course starts -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Form START -->
+                <form class="file-upload" action="/manageCourses/createCourse" method="POST" enctype="multipart/form-data">
+                    <div class="row mb-5 gx-5">
+                        <!-- Course detail -->
+                        <div class="col-xxl-8 mb-5 mb-xxl-0">
+                            <div class="bg-secondary-soft px-4 py-5 rounded">
+                                <div class="row g-3">
+                                    <h4 class="mb-4 mt-0 text-center">Course detail</h4>
+                                    <!-- Course Name -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Course Name *</label>
+                                        <input type="text" class="form-control" placeholder="" name="course_name" aria-label="Course name" value="" required>
+                                    </div> <br>
+                                    <!-- Course Code -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Course Code *</label>
+                                        <input type="text" class="form-control" placeholder="" name="course_code" aria-label="Course Code" value="" required>
+                                    </div>
+                                    <!-- Course Price -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Course Price *</label>
+                                        <input type="number" class="form-control" placeholder="" name="course_price" aria-label="Course Price" value="" required>
+                                    </div>
+                                    <!-- Course Duration -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Course Duration (months)*</label>
+                                        <input type="number" class="form-control" placeholder="" name="course_duration" aria-label="Course Duration" value="" required>
+                                    </div>
+                                    <!-- Course Description -->
+                                    <div class="col-12">
+                                        <label class="form-label">Course Description *</label>
+                                        <textarea class="form-control" placeholder="" name="course_description" aria-label="Course Description" value="" rows="7" required></textarea>
+                                    </div>
+                                </div> <!-- Row END -->
+                            </div>
+                        </div>
+                        <!-- Upload course thumbnail -->
+                        <div class="col-xxl-4">
+                            <div class="bg-secondary-soft px-4 py-5 rounded">   
+                                <div class="row g-3">
+                                    <h4 class="mb-4 mt-0 text-center">Course Thumbnail</h4>
+                                    <div class="text-center">
+                                        <!-- Image upload -->
+                                        <div class="square position-relative display-2 mb-3">
+                                            <img id="preview" src="" alt="" class="position-absolute top-50 start-50 translate-middle" style="max-width: 100%;">
+                                            <!-- <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i> -->
+                                        </div>
+                                        <!-- Button -->
+                                        <input type="file" id="customFile" name="course_image" hidden="">
+                                        <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
+                                        <button type="button" class="btn btn-danger-soft">Remove</button>
+                                        <!-- Content -->
+                                        <p class="text-muted mt-3 mb-0"><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row END -->
+                    <!-- button -->
+                    <div class="gap-3 d-md-flex justify-content-md-center text-center flex-column flex-md-row">
+                        <button type="button" class="btn btn-danger btn-lg mb-3 mb-md-0" style="width: 350px;" id="clear-btn">Clear</button>
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 350px;">Publish</button>
+                    </div>
+                </form> <!-- Form END -->
+            </div>
+        </div>
+    </div>
+        
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-3 wow fadeIn" data-wow-delay="0.1s" id="contact">
+        <div class="container py-3">
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Quick Link</h4>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Privacy Policy</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">FAQs & Help</a>
+                </div>
+                <div class="col-lg-3 col-md-6" style="justify-self: center; margin-left:11%;">
+                    <h4 class="text-white mb-3">Contact</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>LoonayWala, Faisalabad, Pakistan</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+92 312 073 7997</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>alij7478@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+               
+                <div class="col-lg-3 col-md-6" style="justify-self: center; margin-left: 12%;">
+                    <h4 class="text-white mb-3">Newsletter</h4>
+                    <p>"Empower your mind, enrich your life Learnify is your gateway to growth."</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Learnify</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="">Home</a>
+                            <a href="">Cookies</a>
+                            <a href="">Help</a>
+                            <a href="">FAQs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Javascript -->
+    <script src="/js/stickyNavbar.js"></script>
+    <script src="/js/addCourse.js"></script>
+</body>
+
+</html>
