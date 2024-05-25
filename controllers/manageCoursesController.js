@@ -47,14 +47,14 @@ exports.addCourse = async (req, res) => {
                 return res.render('error', { message: 'file upload failed.' });
             }
 
-            console.log(req.body);
-
             const course_details = {
                 course_name: req.body.course_name,
                 course_code: req.body.course_code,
                 course_price: req.body.course_price,
                 course_duration: req.body.course_duration,
                 course_description: req.body.course_description,
+                course_teacher: req.session.username,
+                students_enrolled: 0,
                 course_image: req.file ? req.file.buffer : null
             };
 
@@ -69,35 +69,3 @@ exports.addCourse = async (req, res) => {
         }
     });
 }
-
-// exports.addCourse = async (req, res) => {
-//     // Check if the user is authenticated
-//     if (req.session.isLoggedIn && req.session.isTeacher) {
-//         console.log(req.body);
-//         const course = {
-//             subjectName: req.body.subjectName,
-//             subjectCode: req.body.subjectCode,
-//             description: req.body.description,
-//             instructor: req.session.instructor,
-//             courseImage: req.body.courseImage,
-//             username: req.session.username
-//         };
-//         await courses.connect();
-//         const db = courses.client.db('Learnify');
-//         await db.collection('courses').insertOne(course);
-//         console.log('Course created successfully');
-
-//         if (course_result) {
-//             res.redirect('/manageCourses');
-//         }
-//         else {
-//             res.render('error', { message: 'course could not be added.', isTeacher: true });
-//         }
-//     }
-//     else if (req.session.isLoggedIn && !req.session.isTeacher) {
-//         res.render('error', { message: 'page not found.', isTeacher: false });
-//     }
-//     else {
-//         res.render('error', { message: 'you are not authenticated.', isTeacher: true });
-//     }
-// }
