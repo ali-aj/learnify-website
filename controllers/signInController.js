@@ -1,13 +1,13 @@
-
 const User = require('../models/User');
+const { createToken } = require('../service/auth');
 
 
-// Controller method to render the sign-in page
+// Controller method to render the sign-in page (GET request)
 exports.signInPage = (req, res) => {
     res.render('signIn', {error: ''}); 
 };
 
-// Controller method to process sign-in form submission
+// Controller method to process sign-in form submission (POST request)
 exports.signIn = async (req, res) => {
     // Retrieve username and password from request body
     const username = req.body.username;
@@ -19,16 +19,14 @@ exports.signIn = async (req, res) => {
         const userResult = await user.authenticate(username, password);
         
         if (userResult) {
-            // Authentication successful, redirect to dashboard or homepage
-            req.session.isLoggedIn = true;
-            req.session.username = username;
+            // Create JWT
+            const token = createToken(userResult);
+            res.cookie("token", token, { httpOnly: true });
             
-            if (userResult.role === 'teacher') {
-                req.session.isTeacher = true;
-                res.redirect('/manageCourses');
+            if (userResult.role == 'teacher') {
+                return res.redirect('/manageCourses');
             } else {
-                req.session.isTeacher = false;
-                res.redirect('/');
+                return res.redirect('/');
             }
         } else {
             // Authentication failed, render sign-in page with error message

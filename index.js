@@ -2,26 +2,14 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
-var session = require('express-session')
-
-app.use(
-  session({
-    secret: process.env.sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(cookieParser());
 
 app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect('/SignIn');
-    }
-  });
+  res.clearCookie('token');
+  res.redirect('/SignIn');
 });
 
 // Set views directory and template engine

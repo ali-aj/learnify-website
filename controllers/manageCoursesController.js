@@ -1,6 +1,7 @@
 const Courses = require('../models/Courses');
 const User = require('../models/User');
 const multer = require('multer');
+const { verifyToken } = require('../service/auth');
 
 const user = new User();
 const courses = new Courses();
@@ -9,44 +10,52 @@ const courses = new Courses();
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('course_image');
 
-// Controller method to render the courses page
+// Controller method to render the courses page (Get request)
 exports.manageCoursesPage = async (req, res) => {
     // Check if the user is authenticated
-    if (req.session.isLoggedIn && req.session.isTeacher) {
-        const user_result = await user.getUser(req.session.username);
-        res.render('manageCourses', { isAuthenticated: true, username: req.session.username, isTeacher: req.session.isTeacher, user: user_result[0]});
+    if (req.cookies.token == undefined) {
+        return res.render('error', { message: 'page not found.', isTeacher: false });
     }
-    else if (req.session.isLoggedIn && !req.session.isTeacher) {
-        res.render('error', { message: 'page not found.', isTeacher: false });
+    const user_payload = verifyToken(req.cookies.token);
+    if (user_payload.role == 'teacher') {
+        const user_result = await user.getUser(user_payload.username);
+        return res.render('manageCourses', { isAuthenticated: true, username: user_payload.username, isTeacher: true, user: user_result[0] });
     }
     else {
-        res.redirect('/');
+        return res.render('error', { message: 'page not found.', isTeacher: false });
     }
 };
 
 // Get request
 exports.addCoursePage = async (req, res) => {
     // Check if the user is authenticated
-    if (req.session.isLoggedIn && req.session.isTeacher) {
-        const user_result = await user.getUser(req.session.username);
-        res.render('addCourse', { isAuthenticated: true, username: req.session.username, isTeacher: req.session.isTeacher, user: user_result[0]});
+    if (req.cookies.token == undefined) {
+        return res.render('error', { message: 'page not found.', isTeacher: false });
     }
-    else if (req.session.isLoggedIn && !req.session.isTeacher) {
-        res.render('error', { message: 'page not found.', isTeacher: false });
+    
+    const user_payload = verifyToken(req.cookies.token);
+    if (user_payload.role == 'teacher') {
+        const user_result = await user.getUser(user_payload.username);
+        return res.render('addCourse', { isAuthenticated: true, username: user_payload.username, isTeacher: true, user: user_result[0]});
     }
     else {
-        res.render('error', { message: 'you are not authenticated.', isTeacher: true });
+        return res.render('error', { message: 'you are not authenticated.', isTeacher: true });
     }
 }
 
 // Post request
 exports.addCourse = async (req, res) => {
     upload(req, res, async (err) => {
-        if (req.session.isLoggedIn && req.session.isTeacher) {
+        if (req.cookies.token == undefined) {
+            return res.render('error', { message: 'you are not authenticated.', isTeacher: true });
+        }
+
+        const user_payload = verifyToken(req.cookies.token);
+        if (user_payload.role == 'teacher') {
             if (err) {
                 return res.render('error', { message: 'file upload failed.' });
             }
-
+    
             const course_details = {
                 course_name: req.body.course_name,
                 course_code: req.body.course_code,
@@ -57,15 +66,12 @@ exports.addCourse = async (req, res) => {
                 students_enrolled: 0,
                 course_image: req.file ? req.file.buffer : null
             };
-
+    
             courses.insertCourse(course_details);
-            res.redirect('/manageCourses');
-        }
-        else if (req.session.isLoggedIn && !req.session.isTeacher) {
-            res.render('error', { message: 'page not found.', isTeacher: false });
+            return res.redirect('/manageCourses');
         }
         else {
-            res.render('error', { message: 'you are not authenticated.', isTeacher: true });
+            return res.render('error', { message: 'page not found.', isTeacher: false });
         }
     });
 }

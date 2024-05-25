@@ -1,19 +1,22 @@
 const Courses = require('../models/Courses');
 const User = require('../models/User'); 
+const { verifyToken } = require('../service/auth');
 
 const user = new User();
 
-// Controller method to render the courses page
+// Controller method to render the courses page (Get request)
 exports.coursesPage = async (req, res) => {
     // Check if the user is authenticated
-    if (req.session.isLoggedIn && !req.session.isTeacher) {
-        const user_result = await user.getUser(req.session.username);
-        res.render('courses', { isAuthenticated: true, username: req.session.username, isTeacher: req.session.isTeacher, user: user_result[0]});
+    if (req.cookies.token == undefined) {
+        return res.render('error', { message: 'you are not authenticated.', isTeacher: false });
     }
-    else if (req.session.isLoggedIn && req.session.isTeacher) {
-        res.render('error', { message: 'page not found.', isTeacher: true });
+
+    const user_payload = verifyToken(req.cookies.token);
+    if (user_payload.role != 'teacher') {
+        const user_result = await user.getUser(user_payload.username);
+        return res.render('courses', { isAuthenticated: true, username: user_payload.username, isTeacher: false, user: user_result[0]});
     }
     else {
-        res.render('error', { message: 'you are not authenticated.', isTeacher: false });
+        return res.render('error', { message: 'page not found.', isTeacher: true });
     }
 };

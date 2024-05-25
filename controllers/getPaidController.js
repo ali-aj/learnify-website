@@ -1,18 +1,24 @@
+const { use } = require('passport');
 const Courses = require('../models/Courses');
 const User = require('../models/User');
+const { verifyToken } = require('../service/auth');
 
 const user = new User();
 
 exports.getPaidPage = async (req, res) => {
     // Check if the user is authenticated
-    if (req.session.isLoggedIn && req.session.isTeacher) {
-        const user_result = await user.getUser(req.session.username);
-        res.render('getPaid', { isAuthenticated: true, username: req.session.username, isTeacher: req.session.isTeacher, user: user_result[0]});
+    if (req.cookies.token == undefined) {
+        return res.render('error', { message: 'page not found.', isTeacher: false });
     }
-    else if (req.session.isLoggedIn && !req.session.isTeacher) {
-        res.render('error', { message: 'page not found.', isTeacher: false });
+
+    const token = req.cookies.token;
+    const user_payload = verifyToken(token);
+    
+    if (user_payload.role == 'teacher') {
+        const user_result = await user.getUser(user_payload.username);
+        return res.render('getPaid', { isAuthenticated: true, username: user_payload.username, isTeacher: true, user: user_result[0]});
     }
     else {
-        res.render('error', { message: 'you are not authenticated.', isTeacher: true });
+        return res.render('error', { message: 'you are not authenticated.', isTeacher: false });
     }
 };
