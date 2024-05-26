@@ -1,26 +1,9 @@
 
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
+const { con } = require('../service/db');
 
 class User {
-    constructor() {
-        this.con = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "57365736",
-            database: "learnify"
-        });
-
-        // Connect to the database
-        this.con.connect((err) => {
-            if (err) {
-                console.error('Error connecting to database:', err);
-            } else {
-                console.log('Connected to database');
-            }
-        });
-    }
-
     async getUserProfilePic(username) {
         const query = 'SELECT profile_image FROM users WHERE username = ?';
         const values = [username];
@@ -63,7 +46,7 @@ class User {
     // Method to execute a query
     async query(sql, params) {
         return new Promise((resolve, reject) => {
-            this.con.query(sql, params, (err, results) => {
+            con.query(sql, params, (err, results) => {
                 if (err) {
                     reject(err);
                 } else {

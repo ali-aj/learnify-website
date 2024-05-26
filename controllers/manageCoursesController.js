@@ -62,7 +62,7 @@ exports.addCourse = async (req, res) => {
                 course_price: req.body.course_price,
                 course_duration: req.body.course_duration,
                 course_description: req.body.course_description,
-                course_teacher: req.session.username,
+                course_teacher: user_payload.username,
                 students_enrolled: 0,
                 course_image: req.file ? req.file.buffer : null
             };
