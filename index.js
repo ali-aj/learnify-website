@@ -50,6 +50,8 @@ app.get('/:username/profile', userProfileController.userProfilePage);
 app.post('/:username/profile', userProfileController.updateUserProfile);
 app.get('/profile-image/:username', userProfileController.getProfileImage);
 
+app.get('/course-image/:course_code', manageCoursesController.getCourseImage);
+
 // Student Requests
 app.get('/courses', coursesController.coursesPage);
 app.get('/my-learnings', myLearningController.mylearningPage);

@@ -10,9 +10,24 @@ class User {
         return await this.query(query, values);
     }
 
+    async checkUserProfileImageExists(username) {
+        const query = 'SELECT profile_image FROM users WHERE username = ?';
+        const values = [username];
+        return await this.query(query, values);
+    }
+
     async updateUserProfile(first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, profile_image, username) {
-        const query = 'UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, email = ?, address = ?, facebook = ?, twitter = ?, linkedin = ?, instagram = ?, dribble = ?, pinterest = ?, profile_image = ? WHERE username = ?';
-        const values = [first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, profile_image, username];
+        let query;
+        let values;
+    
+        if (this.checkUserProfileImageExists(username)) {
+            query = 'UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, email = ?, address = ?, facebook = ?, twitter = ?, linkedin = ?, instagram = ?, dribble = ?, pinterest = ? WHERE username = ?';
+            values = [first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, username];
+        } else {
+            query = 'UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, email = ?, address = ?, facebook = ?, twitter = ?, linkedin = ?, instagram = ?, dribble = ?, pinterest = ?, profile_image = ? WHERE username = ?';
+            values = [first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, profile_image, username];
+        }
+    
         await this.query(query, values);
     }
 
@@ -124,6 +139,20 @@ class User {
         } catch (error) {
             throw new Error('Error adding OTP');
         }
+    }
+
+    // Method to get all instructors
+    async getInstructors() {
+        return await this.query('SELECT * FROM users WHERE role = ?', ['teacher']);
+    }
+
+    async getCourseInstructorName(courses) {
+        const instructors = [];
+        for (let i = 0; i < courses.length; i++) {
+            const result = await this.query('SELECT first_name, last_name FROM users WHERE username = ?', [courses[i].course_teacher]);
+            instructors.push(result[0]);
+        }
+        return instructors;
     }
 }
 

@@ -10,7 +10,7 @@ const courses = new Courses();
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('course_image');
 
-// Controller method to render the courses page (Get request)
+// Controller method to render the manage courses page (Get request)
 exports.manageCoursesPage = async (req, res) => {
     // Check if the user is authenticated
     if (req.cookies.token == undefined) {
@@ -19,7 +19,8 @@ exports.manageCoursesPage = async (req, res) => {
     const user_payload = verifyToken(req.cookies.token);
     if (user_payload.role == 'teacher') {
         const user_result = await user.getUser(user_payload.username);
-        return res.render('manageCourses', { isAuthenticated: true, username: user_payload.username, isTeacher: true, user: user_result[0] });
+        const courses_result = await courses.getCourses(user_payload.username);
+        return res.render('manageCourses', { isAuthenticated: true, username: user_payload.username, isTeacher: true, user: user_result[0], courses: courses_result });
     }
     else {
         return res.render('error', { message: 'page not found.', isTeacher: false });
@@ -74,4 +75,20 @@ exports.addCourse = async (req, res) => {
             return res.render('error', { message: 'page not found.', isTeacher: false });
         }
     });
+}
+
+exports.getCourseImage = async (req, res) => {
+    if (req.cookies.token == undefined) {
+        return res.render('error', { error: 'you are not authenticated.', isTeacher: false });
+    }
+
+    const course_code = req.params.course_code;
+    const course = await courses.getCourseImage(course_code);
+
+    if (course && course.course_image) {
+        res.contentType('image/png');
+        res.send(course.course_image.buffer);
+    } else {
+        res.status(404).send('Image not found');
+    }
 }

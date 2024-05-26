@@ -28,7 +28,7 @@ exports.userProfilePage = async (req, res) => {
 // Get Request
 exports.getProfileImage = async (req, res) => {
     if (req.cookies.token == undefined) {
-        return res.render('error', { error: 'you are not authenticated.' });
+        return res.render('error', { error: 'you are not authenticated.', isTeacher: false });
     }
     const token = req.cookies.token;
     const user_payload = verifyToken(token);
