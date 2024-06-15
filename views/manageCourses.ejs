@@ -93,15 +93,19 @@
                 <h3 class="section-title bg-white text-center text-primary px-3 mb-5">Free Courses</h3>
             </div>
             <div class="row g-4 justify-content-center">
-                
-                <% for (let i=0; i < courses.length && courses[i].course_price != '0'; i++) { %>
+                <% for (let i=0; i < courses.length; i++) { %>
+                    <% if (courses[i].course_price == "0") { %>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="course-item bg-light">
                             <div class="position-relative overflow-hidden">
                                 <img class="img-fluid" src="/course-image/<%= courses[i].course_code %>" alt="<%= courses[i].course_name %>">
                                 <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                    <a href="" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                    <a href="" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
+                                    <a href="/courseDetails/<%= courses[i].course_code %>" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Read More</a>
+                                    <form action="/deleteCourse/<%= courses[i].course_code %>" method="post">
+                                        <button class="flex-shrink-0 btn btn-sm btn-danger px-3 ms-2" style="border-radius: 30px;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>    
+                                    </form>
                                 </div>
                             </div>
                             <div class="text-center p-4 pb-0">
@@ -115,12 +119,11 @@
                             </div>
                         </div>
                     </div>
+                    <% } %>
                 <% } %>
-
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item bg-light" style="border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s;">
                         <div class="text-center p-4 pb-0">
-                            <!-- Plus Image with Link -->
                             <a href="manageCourses/createCourse" class="plus-icon-link" id="free-course-btn">
                                 <img src="img/plus_icon.png" alt="Add Course" class="plus-icon" style="width: 50%; margin-top: 20px;">
                             </a>
@@ -148,8 +151,12 @@
                             <div class="position-relative overflow-hidden">
                                 <img class="img-fluid" src="/course-image/<%= courses[i].course_code %>" alt="<%= courses[i].course_name %>">
                                 <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                    <a href="" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                    <a href="" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
+                                    <a href="/courseDetails/<%= courses[i].course_code %>" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Read More</a>
+                                    <form action="/deleteCourse/<%= courses[i].course_code %>" method="post">
+                                        <button class="flex-shrink-0 btn btn-sm btn-danger px-3 ms-2" style="border-radius: 30px;">
+                                            <i class="fa fa-trash"></i>
+                                        </button>    
+                                    </form>
                                 </div>
                             </div>
                             <div class="text-center p-4 pb-0">
@@ -168,7 +175,6 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item bg-light" style="border-radius: 15px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s;">
                         <div class="text-center p-4 pb-0">
-                            <!-- Plus Image with Link -->
                             <a href="manageCourses/createCourse" class="plus-icon-link">
                                 <img src="img/plus_icon.png" alt="Add Course" class="plus-icon" style="width: 50%; margin-top: 20px;">
                             </a>

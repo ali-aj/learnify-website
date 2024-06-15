@@ -117,6 +117,37 @@
                                         <label class="form-label">Course Duration (hours)*</label>
                                         <input type="number" class="form-control" placeholder="" name="course_duration" aria-label="Course Duration" value="" required>
                                     </div>
+                                    <!-- Skill Level -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Skill Level *</label>
+                                        <select class="form-control" name="skill_level" aria-label="Skill Level" required>
+                                            <option value="">Select Skill Level</option>
+                                            <option value="Beginner">Beginner</option>
+                                            <option value="Intermediate">Intermediate</option>
+                                            <option value="Advanced">Advanced</option>
+                                        </select>
+                                    </div>
+                                    <!-- Course Language -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Language *</label>
+                                        <select class="form-control" name="language" aria-label="Language" required>
+                                            <option value="">Select Language</option>
+                                            <option value="English">English</option>
+                                            <option value="Spanish">Spanish</option>
+                                            <option value="French">French</option>
+                                            <option value="Urdu">Urdu</option>
+                                        </select>
+                                    </div>
+                                    <!-- Course Category -->
+                                    <div class="col-12">
+                                        <label class="form-label">Course Category *</label>
+                                        <select class="form-control" name="course_category" aria-label="Course Category" required>
+                                            <option value="">Select Course Category</option>
+                                            <% for (let i=0; i<course_categories.length; i++) { %>
+                                                <option value="<%= course_categories[i].category_name %>"><%= course_categories[i].category_name %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
                                     <!-- Course Description -->
                                     <div class="col-12">
                                         <label class="form-label">Course Description *</label>
@@ -126,7 +157,7 @@
                             </div>
                         </div>
                         <!-- Upload course thumbnail -->
-                        <div class="col-xxl-4">
+                        <div class="col-xxl-4 d-flex align-items-center">
                             <div class="bg-secondary-soft px-4 py-5 rounded">   
                                 <div class="row g-3">
                                     <h4 class="mb-4 mt-0 text-center">Course Thumbnail</h4>
@@ -134,7 +165,6 @@
                                         <!-- Image upload -->
                                         <div class="square position-relative display-2 mb-3">
                                             <img id="preview" src="" alt="" class="position-absolute top-50 start-50 translate-middle" style="max-width: 100%;">
-                                            <!-- <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i> -->
                                         </div>
                                         <!-- Button -->
                                         <input type="file" id="customFile" name="course_image" hidden="">
@@ -146,7 +176,45 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div id="modules-container">
+                            <div class="col-12 module my-2">
+                                <div class="d-flex justify-content-center align-items-center bg-light p-3" id="module" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                                    <h5 class="mb-0">Module 1</h5>
+                                </div>
+                                <div class="p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="module-content" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                    <div class="form-group">
+                                        <label for="videoTitle">Video Title *</label>
+                                        <input type="text" class="form-control" name="module_video_title" id="videoTitle" placeholder="Enter the video title" required>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label for="videoUpload">Upload Video *</label>
+                                        <input type="file" class="form-control" name="module_video_file" id="videoUpload" accept="video/*" required>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label for="videoDescription">Description *</label>
+                                        <textarea class="form-control" name="module_video_description" id="videoDescription" rows="4" placeholder="Enter a description for the video" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-12 py-4">
+                            <div class="d-flex justify-content-between align-items-center bg-light p-3" style="border-radius: 10px;">
+                                <h5 class="mb-0">Add New Module</h5>
+                                <div class="d-flex">
+                                    <button type="button" class="btn btn-primary mx-1" id="module-btn" style="border-radius: 50px;">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" id="delete-module-btn" style="border-radius: 50px;">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                
                     </div> <!-- Row END -->
+
                     <!-- button -->
                     <div class="gap-3 d-md-flex justify-content-md-center text-center flex-column flex-md-row">
                         <button type="button" class="btn btn-danger btn-lg mb-3 mb-md-0" style="width: 350px;" id="clear-btn">Clear</button>

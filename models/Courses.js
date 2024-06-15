@@ -14,6 +14,24 @@ class Courses {
         });
     }
 
+    async deleteCourse(course_code) {
+        const db = client.db('Learnify');
+        const collection = db.collection('courses');
+        collection.deleteOne({ course_code }, (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log('Course deleted successfully');
+            }
+        });
+    }
+
+    async getCourseCategories() {
+        const db = client.db('Learnify');
+        const collection = db.collection('course_categories');
+        return collection.find().toArray();
+    }
+
     async getAllCourses() {
         const db = client.db('Learnify');
         const collection = db.collection('courses');
@@ -24,6 +42,12 @@ class Courses {
         const db = client.db('Learnify');
         const collection = db.collection('courses');
         return collection.find({ course_teacher }).toArray();
+    }
+
+    async getCourse(course_code) {
+        const db = client.db('Learnify');
+        const collection = db.collection('courses');
+        return collection.find({ course_code }).toArray();
     }
 
     async getTopThreeCourses() {

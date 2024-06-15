@@ -113,14 +113,23 @@
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h3 class="section-title bg-white text-center text-primary px-3 mb-5">Courses Categories</h3>
-                <!-- <h1 class="mb-5">Courses Categories</h1> -->
             </div>
-            <div class="row g-3">
-               
+            <div class="row g-3 justify-content-center">
+                <% for(let i=0; i<course_categories.length; i++) { %>
+                    <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.5s">
+                        <a class="position-relative d-block overflow-hidden" href="">
+                            <img class="img-fluid" src="img/cat-3.jpg" alt="">
+                            <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                <h5 class="m-0"><%= course_categories[i].category_name %></h5>
+                                <!-- <small class="text-primary">49 Courses</small> -->
+                            </div>
+                        </a>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>
-    <!-- Categories Start -->
+    <!-- Categories End -->
 
 
     <!-- Courses Start -->
@@ -137,8 +146,7 @@
                             <div class="position-relative overflow-hidden">
                                 <img class="img-fluid" src="/course-image/<%= courses[i].course_code %>" alt="<%= courses[i].course_name %>">
                                 <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                    <a href="" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                    <a href="" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
+                                    <a href="/courseDetails/<%= courses[i].course_code %>" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Read More</a>
                                 </div>
                             </div>
                             <div class="text-center p-4 pb-0">
@@ -176,9 +184,9 @@
                         </div>
                         <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
                             <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href="<%= instructors[i].linkedin %>"><i class="fab fa-linkedin"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href="<%= instructors[i].twitter %>"><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href="<%= instructors[i].instagram %>"><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-sm-square btn-primary mx-1" href="<%= instructors[i].linkedin %>" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a class="btn btn-sm-square btn-primary mx-1" href="<%= instructors[i].twitter %>" target="_blank"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-sm-square btn-primary mx-1" href="<%= instructors[i].instagram %>" target="_blank"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                         <div class="text-center p-4">

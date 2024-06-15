@@ -1,5 +1,3 @@
-const { use } = require('passport');
-const Courses = require('../models/Courses');
 const User = require('../models/User');
 const { verifyToken } = require('../service/auth');
 

@@ -27,13 +27,7 @@ exports.userProfilePage = async (req, res) => {
 
 // Get Request
 exports.getProfileImage = async (req, res) => {
-    if (req.cookies.token == undefined) {
-        return res.render('error', { error: 'you are not authenticated.', isTeacher: false });
-    }
-    const token = req.cookies.token;
-    const user_payload = verifyToken(token);
-
-    const user_result = await user.getUser(user_payload.username);
+    const user_result = await user.getUser(req.params.username);
 
     if (user_result.length > 0 && user_result[0].profile_image) {
         res.contentType('image/png'); 
@@ -47,7 +41,7 @@ exports.getProfileImage = async (req, res) => {
 exports.updateUserProfile = async (req, res) => {
     upload(req, res, async (err) => {
         if (req.cookies.token == undefined) {
-            return res.render('error', { error: 'you are not authenticated.' });
+            return res.render('error', { message: 'you are not authenticated.' });
         }
 
         if (err) {
