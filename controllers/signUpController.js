@@ -40,18 +40,7 @@ exports.signUp = async (req, res) => {
         // Create new user with hashed password
         await user.createUser(username, email, password, role, first_name, last_name, phone_number, date_of_birth, address);
 
-        req.session.isLoggedIn = true;
-        req.session.username = username;
-
-        if (role === 'teacher') {
-            // Redirect to manage courses page
-            req.session.isTeacher = true;
-            res.redirect('manageCourses');
-        }
-        else { 
-            req.session.isTeacher = false;
-            res.redirect('/');
-        }
+        return res.redirect('/SignIn');
     } catch (error) {
         // Handle error
         console.error('Error processing sign-up:', error);

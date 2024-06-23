@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 require('dotenv').config();
 
 app.use(cookieParser());
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cors());
 
 // Route handlers using controllers
 app.get('/SignIn', signInController.signInPage);
@@ -53,10 +55,13 @@ app.get('/profile-image/:username', userProfileController.getProfileImage);
 app.get('/course-image/:course_code', manageCoursesController.getCourseImage);
 app.get('/courseDetails/:course_code', coursesController.courseDetailsPage);
 
+app.get('/category-image/:category', coursesController.getCategoryImage);
+
 // Student Requests
 app.get('/courses', coursesController.coursesPage);
 app.get('/my-learnings', myLearningController.mylearningPage);
-
+app.get('/enroll', myLearningController.enrollCourse);
+app.get('/checkout', myLearningController.checkoutPage);
 
 // Teacher Requests
 app.get('/manageCourses', manageCoursesController.manageCoursesPage);

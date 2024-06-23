@@ -41,6 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Clear the input values in the cloned module
         newModule.querySelectorAll('input, textarea').forEach(input => input.value = '');
 
+        newModule.querySelector('input[type="text"]').setAttribute('name', `module_video_title_${moduleCount}`);
+        newModule.querySelector('input[type="file"]').setAttribute('name', `module_video_file_${moduleCount}`);
+        newModule.querySelector('textarea').setAttribute('name', `module_video_description_${moduleCount}`);
+
         // Append the new module to the container
         container.appendChild(newModule);
     });

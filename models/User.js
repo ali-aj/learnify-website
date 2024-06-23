@@ -10,17 +10,31 @@ class User {
         return await this.query(query, values);
     }
 
+    async enrollCourse(student_username, course_code, enroll_price) {
+        const query = 'INSERT INTO courseenrollmentdetails (course_code, student_username, enroll_date, enroll_price, status) VALUES (?, ?, ?, ?, ?)';
+        const enroll_date = new Date();
+        const values = [course_code, student_username, enroll_date, enroll_price, "Ongoing"];
+        await this.query(query, values);
+    }
+
+    async getStudentCourses(username) {
+        const query = 'SELECT * FROM courseenrollmentdetails WHERE student_username = ?';
+        const values = [username];
+        return await this.query(query, values);
+    }
+
     async checkUserProfileImageExists(username) {
         const query = 'SELECT profile_image FROM users WHERE username = ?';
         const values = [username];
-        return await this.query(query, values);
+        const result = await this.query(query, values);
+        return result.length > 0 && result[0].profile_image != null;
     }
 
     async updateUserProfile(first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, profile_image, username) {
         let query;
         let values;
     
-        if (this.checkUserProfileImageExists(username)) {
+        if (await this.checkUserProfileImageExists(username)) {
             query = 'UPDATE users SET first_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, email = ?, address = ?, facebook = ?, twitter = ?, linkedin = ?, instagram = ?, dribble = ?, pinterest = ? WHERE username = ?';
             values = [first_name, last_name, date_of_birth, phone_number, email, address, facebook, twitter, linkedin, instagram, dribble, pinterest, username];
         } else {

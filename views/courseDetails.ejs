@@ -38,29 +38,26 @@
            
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <% if (isAuthenticated == false) { %>
-                    <a href="/SignIn" class="nav-item nav-link">Sign In</a>
-                <% } else { %>
+                <% if (isTeacher == true) { %>
                     <a href="/manageCourses" class="nav-item nav-link">Manage Courses</a>
                     <a href="/get-paid" class="nav-item nav-link">Get Paid</a>
+                <% } else { %>
+                    <a href="/courses" class="nav-item nav-link">Browse Courses</a>
+                    <a href="/my-learnings" class="nav-item nav-link">My Learning</a>
                 <% } %>
             </div>
-            <% if (isAuthenticated == false) {%>
-                <a href="/SignUp" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
-            <% } else { %>
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0.5rem 1rem;">
-                        <% if (user.profile_image) { %>
-                            <img src="/profile-image/<%= username %>" alt="<%= username %>" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
-                        <% } %>
-                        <span><%= username %></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <li><a class="dropdown-item" href="/<%= username %>/profile">Profile</a></li>
-                      <li><a class="dropdown-item" href="/logout">Log Out</a></li>
-                    </ul>
-                </div>
-            <% } %>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0.5rem 1rem;">
+                    <% if (user.profile_image) { %>
+                        <img src="/profile-image/<%= username %>" alt="<%= username %>" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                    <% } %>
+                    <span><%= username %></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="/<%= username %>/profile">Profile</a></li>
+                    <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
     <!-- Navbar End -->
@@ -87,10 +84,6 @@
                             <h6 class="text-white my-3"><%= course_instructor_name.first_name + ' ' + course_instructor_name.last_name %></h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Lectures</h6>
-                            <h6 class="text-white my-3">-</h6>
-                        </div>
-                        <div class="d-flex justify-content-between border-bottom px-4">
                             <h6 class="text-white my-3">Duration</h6>
                             <h6 class="text-white my-3"><%= course.course_duration %> Hrs</h6>
                         </div>
@@ -98,13 +91,17 @@
                             <h6 class="text-white my-3">Skill level</h6>
                             <h6 class="text-white my-3"><%= course.skill_level %></h6>
                         </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">Total Modules</h6>
+                            <h6 class="text-white my-3"><%= course.modules_count %></h6>
+                        </div>
                         <div class="d-flex justify-content-between px-4">
                             <h6 class="text-white my-3">Language</h6>
                             <h6 class="text-white my-3"><%= course.language %></h6>
                         </div>
                         <h5 class="text-white py-3 px-4 m-0 text-center">Course Price: <%= course.course_price == '0' ? 'Free' : '$' + course.course_price %></h5>
                     </div>
-                    <a class="btn btn-block btn-secondary py-3 px-5" href="" style="width: 100%; border-radius: 5px;">Enroll Now</a>
+                    <a class="btn btn-block btn-secondary py-3 px-5" href="/enroll?course_code=<%= encodeURIComponent(course.course_code) %> %>" style="width: 100%; border-radius: 5px;">Enroll Now</a>
                 </div>
             </div>
         </div>
