@@ -68,28 +68,32 @@ Learnify is a comprehensive web-based learning platform built with Node.js, Expr
          date_of_birth DATE,
          phone_number VARCHAR(20),
          address TEXT,
-         otp VARCHAR(6)
+         otp VARCHAR(6),
+         profile_image LONGBLOB,
+         facebook VARCHAR(255),
+         twitter VARCHAR(255),
+         linkedin VARCHAR(255),
+         instagram VARCHAR(255),
+         dribble VARCHAR(255),
+         pinterest VARCHAR(255)
      );
      ```
 
 4. **Environment Setup**
    - Create `.env` file:
      ```
-     PORT=3000
+     PORT=
+     email=
+     emailPassword=
+     stripeSecretKey=
+     jwtSecret=
+     sqlHost=
+     sqlUser=
+     sqlPassword=
+     sqlDatabase=
      ```
 
-5. **Configure Database**
-   Update User.js:
-   ```javascript
-   this.con = mysql.createConnection({
-       host: "localhost",
-       user: "your_username",
-       password: "your_password",
-       database: "learnify"
-   });
-   ```
-
-6. **Launch Application**
+5. **Launch Application**
    ```bash
    node index.js
    ```
