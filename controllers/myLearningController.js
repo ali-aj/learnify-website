@@ -2,7 +2,7 @@ const Courses = require('../models/Courses');
 const User = require('../models/User');
 const { verifyToken } = require('../service/auth');
 require('dotenv').config();
-const stripe = require('stripe')(process.env.stripeSecretKey);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.mylearningPage = async (req, res) => {
 
@@ -31,8 +31,9 @@ exports.mylearningPage = async (req, res) => {
             return res.render('error', { message: 'page not found.', isTeacher: true });
         }
     }
-    catch {
-        return res.redirect('/SignIn');
+    catch (error) {
+        console.error('Error:', error.message);
+        return res.render('error', { message: error.message, isTeacher: false });
     }
 };
 

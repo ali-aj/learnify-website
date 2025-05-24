@@ -4,10 +4,10 @@ const MongoClient = require('mongodb').MongoClient;
 
 // MySQL Connection
 const con = mysql.createConnection({
-    host: process.env.sqlHost,
-    user: process.env.sqlUser,
-    password: process.env.sqlPassword,
-    database: process.env.sqlDatabase
+    host: process.env.SQL_HOST,
+    user: process.env.SQL_USER,
+    password: process.env.SQL_PASSWORD,
+    database: process.env.SQL_DATABASE
 });
 
 // Connect to the database
@@ -20,7 +20,7 @@ con.connect((err) => {
 });
 
 // Mongo DB Connection
-const url = process.env.mongoUrl;
+const url = process.env.MONGO_URL; // MongoDB connection URL
 
 // Create a new MongoClient
 const client = new MongoClient(url); 
