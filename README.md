@@ -100,9 +100,9 @@ Learnify is a comprehensive web-based learning platform built with Node.js, Expr
    - Set up database access (create username/password)
    - Configure network access (add your IP or allow all IPs)
    - Create database named "Learnify"
-   - Create these collections:
-    1. course_categories (for storing course categories)
-    2. courses (for storing course details)
+   - **Create these collections:**
+      1. course_categories (for storing course categories)
+      2. courses (for storing course details)
    - Get your connection string from "Connect" button
    - Replace `<password>` in connection string with your database user password
 
