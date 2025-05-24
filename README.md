@@ -90,7 +90,7 @@ Learnify is a comprehensive web-based learning platform built with Node.js, Expr
          status VARCHAR(50) NOT NULL,
          progress INT DEFAULT 0,
          completion_date DATETIME,
-         PRIMARY KEY unique_enrollment (course_code, student_username)
+         PRIMARY KEY (course_code, student_username)
      );
      ```
    **MongoDB Atlas Setup:**
